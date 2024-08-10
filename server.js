@@ -1,50 +1,32 @@
-const express = require('express');
-const server = express();   // create server
-const morgan = require('morgan');
-
-server.use(morgan('dev'));
-
-const loggerFun = (req, res, next) => {
-    console.log(req.ip, req.url, req.method);
-    next();
-}
-server.use(loggerFun);
-
-// in-built middleware
-server.use(express.json());
-server.use(express.urlencoded({ extended: false}));
-server.use("/hello", express.static('public'));
-
-const myFun = (req, res, next) =>{
-    console.log(req.body);
-    next();
-    // if(req.query.age >= 18){
-    //     console.log('Success');
-    //     next();
-    // }else{
-    //     res.Json({message: "Sorry you are not allowed to visit this website ..."})
-    // }
-}
-
-// server.use(myFun);  // application
-
-// POST, GET PUT, PATCH, DELETE
-server.get('/', (req, res) => {
-    res.write('Welcome to Express');
-    res.end();
-})
-
-server.get('/login', myFun, (req, res) => {
-    res.write({msg:'Welcome to Login Page'});
-    res.end();
-})
-
-server.post('/', (req, res) => {
-    // res.write('Welcome to Post Method');
-    res.send('Welcome to Post Method');
-})
-
-
-server.listen(8000, () => {
-    console.log('Server Start at http://localhost8000');
+const express = require("express");
+const app = express();
+const morgan = require("morgan");
+const users = require("./friend.json");
+console.log(users);
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({extended:false }));
+app.get("/" , (req,res)=>{
+     res.send(" Welcome To Express Server");
 });
+// CRUD
+// Creat User
+     app.post("/users",(req,res)=>{
+     console.log(req.body);
+     users.push(req.body);
+     res.json({message: "User Added Success"});
+     });
+     // Read User  - Get All Users
+     app.get("/user",req,res=>{
+          res.json(users);
+     });
+     // Get Single User
+     app.get("/user/:id",(req,res)=>{
+          let id = +req.params.id;
+          let item = users.find((user)=>user.id === id)
+          res.json(item);
+     });
+
+     app.listen(2024,()=>{
+          console.log("Server Start at http://localhost:2024");
+     });
