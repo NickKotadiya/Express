@@ -1,34 +1,44 @@
+// const users = require("../friend.json");
+const User = require("../model/user.model");
 
-const products = require("../product.json");
-
-exports.addNewproduct = (req,res) => {
-    // res.send("<h1>Hello this is home Page.</h1>");
-    products.push(req.body);
-    res.send(products);
-    // console.log(products);
-}    
-
-exports.getAllproducts = (req,res) => {
-    res.send(products);
+exports.addNewUser = async(req, res) => {
+  try{
+      const user = await User.create(req.body);
+      res.status(201).json({user, message: "User Added Success"});
+  }catch(err){
+     console.log(err);
+     res.status(500).json({message:'Internal Server Error'})
+  }
 };
 
-exports.getSingleproduct = (req,res) => {
-    let id = +req.params.id;
-    let product = products.find((item) => item.id === id);
-    res.json(product);
-}
+// exports.getAllUsers = (req, res) => {
+//   res.json(users);
+// };
 
-exports.replaceProduct = (req,res)=>{
-    let id = +req.params.id;
-    let productIndex = products.findIndex((item) => item.id === id);
-    products.splice(productIndex,1,req.body);
-    res.json({message:"Replace data success.."});
-}
+// exports.getUser = (req, res) => {
+//   let id = +req.params.id;
+//   let item = users.find((user) => user.id === id);
+//   res.json(item);
+// };
 
-exports.updateProduct = (req,res) => {
-    let id = +req.params.id;
-    let productIndex = products.findIndex((item) => item.id  === id);
-    let mainproduct = products[productIndex];
-    products.splice(productIndex , 1 , {...mainproduct,...req.body});
-    res.json({message:"update data success.."});
-}
+// exports.replaceUser = (req, res) => {
+//   let id = +req.params.id;
+//   let userIndex = users.findIndex((item) => item.id === id);
+//   users.splice(userIndex, 1, req.body);
+//   res.json({ message: "User Replaced Success" });
+// };
+
+// exports.updateUser = (req, res) => {
+//   let id = +req.params.id;
+//   let userIndex = users.findIndex((item) => item.id === id);
+//   let user = users[userIndex];
+//   users.splice(userIndex, 1, { ...user, ...req.body });
+//   res.json({ message: "User Update Success" });
+// };
+
+// exports.deleteUser = (req, res) => {
+//   let id = +req.params.id;
+//   let userIndex = users.findIndex((item) => item.id === id);
+//   users.splice(userIndex, 1);
+//   res.json({ message: "User Delete Success" });
+// };
