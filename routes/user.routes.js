@@ -1,24 +1,23 @@
-const express = require('express');
-const userRoutes = express.Router();
-const {
-     addNewUser,
-     getAllUser,
-     getUser,
-     replaceUser,
-     updateUser,
-     deleteUser
-} = require("../controller/user.controller")
+const express = require("express")
+const userRoutes = express.Router()
+const { addNewUser, getAllUsers, getUser, replaceUser, updateUser, deleteUser } = require("../controller/user.controller")
 
-userRoutes.post("/",addNewUser);
+//CRUD
+//create user
+userRoutes.post("/",addNewUser)
 
-// userRoutes.get("/",getAllUser);
+// READ -Get All users
+userRoutes.get("/", getAllUsers)
 
-// userRoutes.get("/:id", getUser);
+// //Get single User
+userRoutes.get("/get-user", getUser)
 
-// userRoutes.put("/:id",replaceUser);
+// // Replace Data - PUT
+// userRoutes.put("/:id", replaceUser)
 
-// userRoutes.patch("/:id" ,updateUser);
+// // Update Data - PATCH
+// userRoutes.patch("/:id", updateUser)
 
-// userRoutes.delete("/:id",deleteUser);
+// userRoutes.delete("/:id", deleteUser)
 
 module.exports = userRoutes;
