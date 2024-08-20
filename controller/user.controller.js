@@ -1,5 +1,6 @@
 // const users = require('../user.json')  //=>static 
-const User = require('../model/user.model')
+const User = require('../model/user.model');
+const { use } = require('../routes/user.routes');
 
 exports.addNewUser = async (req, res) => {
   try {
@@ -44,24 +45,34 @@ exports.getUser = async (req, res) => {
   }
 }
 
-// exports.replaceUser = (req, res) => {
-//     let id = +req.params.id;
-//     let userIndex = users.findIndex((item) => item.id === id)
-//     users.splice(userIndex, 1, req.body)
-//     res.json({ message: "User Replaced Success" })
-// }
+exports.updateUser = async (req , res)=>{
+  try {
+    let user = await User.findByID(req.query.userID);
+    if(!user){
+      return res.status(404).json({message: "User Not Found..."})
+    }
+    // user = await User.updateOne({_id:user._id} , req.body , {new: true});
+    // user = await User.findOneAndUpdate({_id:user._id} , req.body , {new:true});
+    user = await User.findByIDAndUpdte(user._id, {$set: req.body}, {new: true});
+    res.status(200).json({user , message:'User update success'});
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({message: "Internal Server Error..."})
+  }
+};
 
-// exports.updateUser = (req, res) => {
-//     let id = +req.params.id;
-//     let userIndex = users.findIndex((item) => item.id === id)
-//     let user = users[userIndex]
-//     users.splice(userIndex, 1, { ...user, ...req.body })
-//     res.json({ message: "User update Success" })
-// }
-
-// exports.deleteUser = (req, res) => {
-//     let id = +req.params.id;
-//     let userIndex = users.findIndex((item) => item.id === id)
-//     users.splice(userIndex, 1)
-//     res.json({ message: "User delete Success" })
-// }
+exports.deleteUser = async (req , res)=>{
+  try {
+    let user = await User.findByID(req.query.userID);
+    if(!user){
+      return res.status(404).json({message: "User Not Found..."})
+    }
+    // user = await User.deleteOne({_id : user._id})
+    // user = await User.findOneAndDelete({_id: user._id})
+    user = await User.findByIDAndDelete(user._id)
+    res.status(200).json({user , message:'user Delete success'});
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({message : "Internal Server Error..."})
+  }
+};
