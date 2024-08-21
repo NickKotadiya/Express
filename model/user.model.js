@@ -8,6 +8,15 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
     },
+    password: {
+        type:String,
+    },
+    mobileNo:{
+        type: String,
+    },
+    profileImage:{
+        type:String,
+    },
     age: {
         type: Number,
     },

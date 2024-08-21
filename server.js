@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/users", userRoutes);
 
-app.listen(2024, () => {
+app.listen(port, () => {
   //Database Connection
   mongoose
   .connect(process.env.MONGO_URL)
