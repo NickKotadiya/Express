@@ -1,27 +1,34 @@
-// npm i dotenv
+// --------------------------lecture10----------------------------------------
 require('dotenv').config();
-const port = process.env.PORT;
-
-const express = require("express");
-const morgan = require("morgan");
+const express = require('express');
+const morgan = require('morgan');
 const app = express();
-const userRoutes = require("./routes/user.routes");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const port = process.env.PORT;
+// const userRoutes = require('./routes/user.routes');
 
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+const productRoutes = require('./routes/product.routes');
+// console.log(users)
 
-app.get("/", (req, res) => {
-  res.send(" Welcome To Express Server ");
-});
-app.use("/api/users", userRoutes);
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
+app.get('/', (req, res) => {
+    res.send("Welcome To Express Server...")
+})
+
+// app.use("/api/user" , userRoutes);
+
+app.use("/api/product" , productRoutes);
 
 app.listen(port, () => {
-  //Database Connection
-  mongoose
-  .connect(process.env.MONGO_URL)
-  .then(()=>console.log("Database connection established success..."))
-  .catch((err)=>console.log(err))
-  console.log(`Server Start at http://localhost:${port}`);
-});
+    // Database Connection
+    mongoose
+    .connect(process.env.MONGO_URL)
+    .then(() => {
+    console.log("Database connection established  successfully")
+    })
+    .catch((err) => console.log(err))
+    console.log(`Server Start At http://localhost:${port}`)
+})
